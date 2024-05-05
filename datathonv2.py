@@ -13,13 +13,13 @@ import pandas as pd
 archivo_excel = pd.read_csv('Dathaton.csv')
 tweets = archivo_excel['tweet'].values
 
-# 1. Importación de Librerías
+## Importación de Librerías
 from transformers import BertTokenizer, BertForSequenceClassification
 from sklearn.preprocessing import LabelEncoder
 import torch
-import json  # <-- Importamos la librería para trabajar con JSON
+import json  ## Importamos la librería para trabajar con JSON
 
-# 2. Declaración de Funciones
+## Declaración de Funciones
 
 def predict_sentiment(text, model, tokenizer, label_encoder, device):
     model.eval()
@@ -30,7 +30,7 @@ def predict_sentiment(text, model, tokenizer, label_encoder, device):
     predicted_class = torch.argmax(outputs.logits, dim=1)
     return label_encoder.inverse_transform(predicted_class.cpu())[0]
 
-# 3. Inicialización del Modelo
+## Iniciamos el Modelo
 
 tokenizer = BertTokenizer.from_pretrained("ignacio-ave/BETO-nlp-sentiment-analysis-spanish")
 model = BertForSequenceClassification.from_pretrained("ignacio-ave/BETO-nlp-sentiment-analysis-spanish")
@@ -50,18 +50,18 @@ for tweet in tweets:
 
 import pandas as pd
 
-# Load the data in a dataframe
+## Cargamos la información en un dataframe
 pd.set_option('max_colwidth', None)
 pd.set_option('display.width', 3000)
 df = pd.DataFrame(results_multiple)
 
 import matplotlib.pyplot as plt
 
-# Let's count the number of tweets by sentiments
+## Contamos la frecuencia de tweets por sentimiento
 sentiment_counts = df.groupby(['Predicción']).size()
 print(sentiment_counts)
 
-# Let's visualize the sentiments
+## Manejamos los sentimientos de cada tweet
 fig = plt.figure(figsize=(6,6), dpi=100)
 ax = plt.subplot(111)
 sentiment_counts.plot.pie(ax=ax, autopct='%1.1f%%', startangle=270, fontsize=12, label="")
@@ -69,7 +69,7 @@ sentiment_counts.plot.pie(ax=ax, autopct='%1.1f%%', startangle=270, fontsize=12,
 from wordcloud import WordCloud
 from wordcloud import STOPWORDS
 
-# Wordcloud with positive tweets
+## Creamos un Wordcloud con las palabras positivas más repetidas
 positive_tweets = df['Tweet'][df["Predicción"] == 'P+']
 stop_words = ["https", "co", "RT", "la", "en", "que", "de", "una", "un", "los", "y", "lo", "mi", "te", "Muchas", "gracias", "excelente", "muchisimas", "saludos", "estimados", "al", "del", "object", "name","dtype" ] + list(STOPWORDS)
 positive_wordcloud = WordCloud(max_font_size=50, max_words=50, background_color="white", stopwords = stop_words).generate(str(positive_tweets))
